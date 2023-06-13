@@ -14,8 +14,18 @@ jobs:
           node-version: '18.x'
           registry-url: 'https://registry.npmjs.org'
       - run: npm ci
-      - run: npm build
-      - run: npm publish
+      - run: npm run build
+      - name: Get dist-tag name
+        id: dist-tag
+        env:
+          BRANCH: "${{ github.event.pull_request.head.ref }}"
+        run: |
+          if [[ $BRANCH == release/* ]]; then
+            run: echo "::set-output name=NAME::latest"
+          else
+            run: echo "::set-output name=NAME::alpha"
+          fi
+      - run: npm publish --tag ${{ steps.dist-tag.outputs.NAME }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Get package version

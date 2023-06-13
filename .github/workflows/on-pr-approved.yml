@@ -4,7 +4,7 @@ on:
 
 jobs:
   alpha:
-    if: github.event.review.state == 'approved' && !(startsWith(github.event.pull_request.head.ref, 'release/v'))
+    if: github.event.review.state == 'approved' && !(startsWith(github.event.pull_request.head.ref, 'release/'))
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -23,7 +23,7 @@ jobs:
           commit_message: 'Update package version to ${{ steps.version.outputs.VERSION }}'
           tagging_message: '${{ steps.version.outputs.VERSION }}'
   release:
-    if: github.event.review.state == 'approved' && startsWith(github.event.pull_request.head.ref, 'release/v')
+    if: github.event.review.state == 'approved' && startsWith(github.event.pull_request.head.ref, 'release/')
     runs-on: ubuntu-latest
     permissions:
       contents: write
