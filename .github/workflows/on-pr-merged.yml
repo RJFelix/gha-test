@@ -1,0 +1,33 @@
+on:
+  pull_request:
+    types:
+      - closed
+
+jobs:
+  merged:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+          registry-url: 'https://registry.npmjs.org'
+      - run: npm ci
+      - run: npm build
+      - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Get package version
+        id: version
+        run: |
+          npm pkg get version | xargs -0 -L1 -I '%' echo 'VERSION=%' >> "$GITHUB_OUTPUT"
+      - uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: "Published version ${{ steps.version.outputs.VERSION }} to npm."
+            })
