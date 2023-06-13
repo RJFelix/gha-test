@@ -22,6 +22,9 @@ jobs:
         with:
           commit_message: 'Update package version to ${{ steps.version.outputs.VERSION }}'
           tagging_message: '${{ steps.version.outputs.VERSION }}'
+          commit_user_name: Userfront Github Bot
+          commit_user_email: 41898282+github-actions[bot]@users.noreply.github.com
+          commit_author: Userfront Github Bot <ryan@userfront.com>
   release:
     if: github.event.review.state == 'approved' && startsWith(github.event.pull_request.head.ref, 'release/')
     runs-on: ubuntu-latest
