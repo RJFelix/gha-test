@@ -28,11 +28,14 @@ jobs:
       - name: log version
         run: |
           cat package.json
-      - uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: 'Update package version to ${{ steps.version.outputs.VERSION }}'
-          tagging_message: '${{ steps.version.outputs.VERSION }}'
-          skip_fetch: false    
+      # - uses: stefanzweifel/git-auto-commit-action@v4
+      #   with:
+      #     commit_message: 'Update package version to ${{ steps.version.outputs.VERSION }}'
+      #     tagging_message: '${{ steps.version.outputs.VERSION }}'
+      #     skip_fetch: false    
+      - name: push changes
+        run: |
+          git push
   release:
     if: github.event.review.state == 'approved' && startsWith(github.event.pull_request.head.ref, 'release/')
     runs-on: ubuntu-latest
