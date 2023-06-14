@@ -10,18 +10,27 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v3
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.ref }}
       - uses: actions/setup-node@v3
         with:
           node-version: '18.x'
           registry-url: 'https://registry.npmjs.org'
+      - name: Configure git identity
+        run: |
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "Userfront Robot"
       - name: Increment alpha version
         id: version
         run: |
           npm version prerelease --preid alpha | xargs -0 -L1 -I '%' echo 'VERSION=%' >> "$GITHUB_OUTPUT"
-      - uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: 'Update package version to ${{ steps.version.outputs.VERSION }}'
-          tagging_message: '${{ steps.version.outputs.VERSION }}'
+      - name: log version
+        run: |
+          cat package.json
+      - name: push changes
+        run: |
+          git push
   release:
     if: github.event.review.state == 'approved' && startsWith(github.event.pull_request.head.ref, 'release/')
     runs-on: ubuntu-latest

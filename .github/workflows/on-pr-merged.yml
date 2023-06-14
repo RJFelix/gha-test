@@ -13,6 +13,10 @@ jobs:
         with:
           node-version: '18.x'
           registry-url: 'https://registry.npmjs.org'
+      - name: Configure git identity
+        run: |
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "Userfront Robot"
       - run: npm ci
       - run: npm run build
       - name: Get dist-tag name
@@ -25,9 +29,12 @@ jobs:
           else
             run: echo "::set-output name=NAME::alpha"
           fi
-      - run: npm publish --tag ${{ steps.dist-tag.outputs.NAME }}
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      # - run: npm publish --tag ${{ steps.dist-tag.outputs.NAME }}
+      #   env:
+      #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: test step instead of publish
+        run: |
+          echo 'would publish version ${{ steps.dist-tag.outputs.NAME }} to npm'
       - name: Get package version
         id: version
         run: |
