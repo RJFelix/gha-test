@@ -24,6 +24,9 @@ jobs:
         id: version
         run: |
           npm version prerelease --preid alpha | xargs -0 -L1 -I '%' echo 'VERSION=%' >> "$GITHUB_OUTPUT"
+      - name: log version
+        run: |
+          echo '${{ steps.version.outputs.VERSION }}''
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: 'Update package version to ${{ steps.version.outputs.VERSION }}'
