@@ -24,3 +24,4 @@ jobs:
           branch: 'release/${{ steps.version.outputs.VERSION }}'
           title: 'Publish ${{ steps.version.outputs.VERSION }} to npm'
           body: 'Automated pull request to publish library version ${{ steps.version.outputs.VERSION }} to npm. If everything looks good, approve this PR to publish and auto-merge.'
+          base: main
