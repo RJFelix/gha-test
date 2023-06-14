@@ -25,9 +25,9 @@ jobs:
           BRANCH: "${{ github.event.pull_request.head.ref }}"
         run: |
           if [[ $BRANCH == release/* ]]; then
-            run: echo "::set-output name=NAME::latest"
+            echo "NAME=latest" >> "$GITHUB_OUTPUT"
           else
-            run: echo "::set-output name=NAME::alpha"
+            echo "NAME=alpha" >> "$GITHUB_OUTPUT"
           fi
       # - run: npm publish --tag ${{ steps.dist-tag.outputs.NAME }}
       #   env:
