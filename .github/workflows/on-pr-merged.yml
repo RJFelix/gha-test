@@ -29,12 +29,9 @@ jobs:
           else
             echo "NAME=alpha" >> "$GITHUB_OUTPUT"
           fi
-      # - run: npm publish --tag ${{ steps.dist-tag.outputs.NAME }}
-      #   env:
-      #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      - name: test step instead of publish
-        run: |
-          echo 'would publish version ${{ steps.dist-tag.outputs.NAME }} to npm'
+      - run: npm publish --tag ${{ steps.dist-tag.outputs.NAME }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Get package version
         id: version
         run: |
