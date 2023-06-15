@@ -7,6 +7,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v3
         with:
           node-version: "18.x"
@@ -23,5 +25,6 @@ jobs:
         env:
           branch: 'release/${{ steps.version.outputs.VERSION }}'
           title: 'Publish ${{ steps.version.outputs.VERSION }} to npm'
+          commit-message: 'version ${{ steps.version.outputs.VERSION }}'
           body: 'Automated pull request to publish library version ${{ steps.version.outputs.VERSION }} to npm. If everything looks good, approve this PR to publish and auto-merge.'
-          base: ${{ github.head_ref }}
+          base: main
