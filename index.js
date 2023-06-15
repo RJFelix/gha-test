@@ -1,1 +1,1 @@
-console.log("this is a test package: dev-6")
+console.log("this is a test package: dev-7")
