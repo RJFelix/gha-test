@@ -42,3 +42,4 @@ jobs:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
           MERGE_REQUIRED_APPROVALS: 1
           MERGE_FORKS: 0
+          MERGE_LABELS: ''
